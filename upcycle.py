@@ -65,7 +65,6 @@ def upcycle():
         max_tokens = 200
 
         result = bedrock.invoke(prompt, temperature, max_tokens)
-<<<<<<< HEAD
         st.success("Here are some upcycling ideas based on your input!")
         st.text(result)
 
@@ -85,8 +84,3 @@ def upcycle():
         # Parse and display ideas
         # ideas = parse_response_to_ideas(result)
         # display_upcycling_ideas(ideas)
-=======
-    
-        st.text(result)
-        print("Response from Chat:", result)
->>>>>>> 2839e24283d9b75189754aaf822c4aa139d4788d
