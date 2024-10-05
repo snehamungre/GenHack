@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Template for Knowledge base with Amazon Opensearch Serverless vector database.
+Parameters:
+  CollectionArn:
+    Type: String
+    Description: The ARN of the collection.
+  DataSourceName:
+    Type: String
+    Description: The name of the data source.
+    Default: assistant-knowledgebase-datasource
+  DataSourceDescription:
+    Type: String
+    Description: The description of the data source.
+    Default: Data source for the knowledge base
+  EmbeddingModelID:
+    Type: String
+    Description: The ARN of the embedding model.
+    Default: amazon.titan-embed-text-v2:0
+  KnowledgeBaseName:
+    Type: String
+    Description: The name of the knowledge base.
+    Default: assistant-knowledgebase
+  KnowledgeBaseDescription:
+    Type: String
+    Description: The description of the knowledge base.
+    Default: Knowledge base for digital assistant    
+  KnowledgeBaseRoleArn:
+    Type: String
+    Description: The ARN of the role to invoke API operations on the knowledge base.
+  OssMetadataField:
+    Type: String
+    Description: Metadata field for vector store
+    Default: AMAZON_BEDROCK_METADATA
+  OssTextField:
+    Type: String
+    Description: Text field for vector store
+    Default: AMAZON_BEDROCK_TEXT_CHUNK
+  OssVectorField:
+    Type: String
+    Description: Vector field for vector store
+    Default: vector_field
+  OssVectorIndex:
+    Type: String
+    Description: Vector index for vector store
+    Default: rag-index
+  S3BucketName:
+    Type: String
+    Description: The name of the S3 bucket where the data is stored.
+Resources:
+  KnowledgeBaseWithAoss:
+    Type: AWS::Bedrock::KnowledgeBase
+    Properties:
+      Name: !Ref KnowledgeBaseName
+      Description: !Ref KnowledgeBaseDescription
+      RoleArn: !Ref KnowledgeBaseRoleArn
+      KnowledgeBaseConfiguration:
+        Type: "VECTOR"
+        VectorKnowledgeBaseConfiguration:
+          EmbeddingModelArn: !Sub "arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/${EmbeddingModelID}"
+      StorageConfiguration:
+        Type: "OPENSEARCH_SERVERLESS"
+        OpensearchServerlessConfiguration:
+          CollectionArn: !Ref CollectionArn
+          VectorIndexName: !Ref OssVectorIndex
+          FieldMapping:
+            VectorField: !Ref OssVectorField
+            TextField: !Ref OssTextField
+            MetadataField: !Ref OssMetadataField
+  KnowledgeBaseDataSource:
+    Type: AWS::Bedrock::DataSource
+    Properties:
+      KnowledgeBaseId: !Ref KnowledgeBaseWithAoss
+      Name: !Ref DataSourceName
+      Description: !Ref DataSourceDescription
+      DataSourceConfiguration:
+        Type: "S3"
+        S3Configuration:
+          BucketArn: !Sub "arn:${AWS::Partition}:s3:::${S3BucketName}"
+Outputs:
+  KnowledgeBaseId:
+    Description: Knowledge base ID.
+    Value: !Ref KnowledgeBaseWithAoss
+  DataSourceId:
+    Description: Data source ID.
+    Value: !GetAtt KnowledgeBaseDataSource.DataSourceId
+  EmbeddingModel:
+    Description: Embedding model ID.
+    Value: !Sub "arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/${EmbeddingModelID}"
