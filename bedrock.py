@@ -17,6 +17,7 @@ bedrock_runtime = boto3.client(
 )
 
 def invoke(prompt, temperature=0.6, max_tokens=1000):
+
     payload = {
         "modelId": "anthropic.claude-3-haiku-20240307-v1:0",
         "contentType": "application/json",
@@ -30,7 +31,7 @@ def invoke(prompt, temperature=0.6, max_tokens=1000):
                     "content": [
                         {
                             "type": "text",
-                            "text": f"How can I upcycle a {prompt}?"
+                            "text": f"{prompt}"                      
                         }
                     ]
                 }
@@ -65,8 +66,3 @@ def invoke(prompt, temperature=0.6, max_tokens=1000):
         return f"ClientError invoking model: {str(e)}"
     except Exception as e:
         return f"Error invoking model: {str(e)}"
-
-# Example usage
-prompt = "cardboard box"  # Replace with your test prompt
-response = invoke(prompt)
-print("Model response:", response)
