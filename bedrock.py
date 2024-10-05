@@ -30,7 +30,7 @@ def invoke(prompt, temperature=0.6, max_tokens=2000):
                     "content": [
                         {
                             "type": "text",
-                            "text": f"How can I upcycle a {prompt}?"
+                            "text": f"{prompt}"                      
                         }
                     ]
                 }
