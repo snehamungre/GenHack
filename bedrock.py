@@ -16,7 +16,7 @@ bedrock_runtime = boto3.client(
     aws_session_token="IQoJb3JpZ2luX2VjEKn//////////wEaCXVzLWVhc3QtMSJHMEUCIQDySMixwG5jqQSFWJ9gdGl3OGZEWmF251Jq1BZHwWCHBQIgWctKLB+VYn1tuUyuA5y20jeeD1QQvygDjENVmkPvRNQqogII8f//////////ARABGgw0MTI3ODQxNDczMTYiDKBgZCSSl+V5/8cp1yr2ARJa/iPVRO65zP4FMI7IeajZuLgGzGHVsEKhuns97KQkAOEkq+JwX/Hd07TcZOGOMjydAV2Xy0riGYnHsjetEX4oRPais60Cy3UJ90DvhbZd196E0j5apLgrqgA4U86g/VGj405ckybnH/+KNArgIt2aPkf9Tm7QzEwLxXoYuOEddkT2TUwPgG+M2AipU9TpTGxASl+PrHglccdXJLtrjAFUBqX0mLPF81UE4fwAwgPvNcqbQTRfMQ+j0+uFH3Wb7yochNm3XnDRf5NJBtonoFfpe0CvABIbFFWgqLQUQAZUodE/vabCqg5e4Cth0hwLbPlBEK6CQTDzyoW4BjqdAWHYVUX++wedIRBZk7AM/3SC4vA9r+bpOBZ306F7VPV5cGb+05GwpdTZIT5srXQWcFIx/A80opCA+6swfpFQ5sMEGtLVgnOVoe4TXzBmhWxPvJ+u9sqefIbUIy3l9vqnHXtupz+r9yvL8fgOydWRTNx0a7ZjkVDRlL22NYw20IPT0iRvHcl0JZhgjp/f4isQatsMJmEO/HVO6wG4DkI="
 )
 
-def invoke(prompt, temperature=0.6, max_tokens=1000):
+def invoke(prompt, temperature=0.6, max_tokens=2000):
     payload = {
         "modelId": "anthropic.claude-3-haiku-20240307-v1:0",
         "contentType": "application/json",
@@ -52,8 +52,10 @@ def invoke(prompt, temperature=0.6, max_tokens=1000):
 
         # Parse and return the response
         response_body = json.loads(response.get("body").read())
-        print("Parsed response body:", response_body)  # Debugging output
+        generation = response_body['content'][0]['text']
+        print("Parsed response body:", generation)  # Debugging output
 
+        return generation
         # Check the structure of the response body
         completion = response_body.get("completion")
         if completion:
@@ -67,6 +69,6 @@ def invoke(prompt, temperature=0.6, max_tokens=1000):
         return f"Error invoking model: {str(e)}"
 
 # Example usage
-prompt = "cardboard box"  # Replace with your test prompt
-response = invoke(prompt)
-print("Model response:", response)
+# prompt = "cardboard box"  # Replace with your test prompt
+# response = invoke(prompt)
+# print("Model response:", response)

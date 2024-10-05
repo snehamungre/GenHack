@@ -17,4 +17,7 @@ if submit_button and topic:
 
     result = bedrock.invoke(prompt, temperature, max_tokens)
     
+    st.text(result)
     print("Response from Chat:", result)
+
+
