@@ -30,6 +30,6 @@ def shop():
             st.error(f"An error occurred: {e}")
 
         #result = bedrock.invoke(prompt, temperature, max_tokens)
-    
+        st.text(result)
         print("Response from Chat:", result)
 
