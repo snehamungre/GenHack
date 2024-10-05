@@ -66,7 +66,7 @@ def upcycle():
 
         result = bedrock.invoke(prompt, temperature, max_tokens)
         st.success("Here are some upcycling ideas based on your input!")
-        st.text(result)
+        st.write(result)
 
         # Parse and display ideas
         # ideas = parse_response_to_ideas(result)
