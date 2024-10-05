@@ -62,7 +62,7 @@ def invoke(prompt, temperature=0.6, max_tokens=4000):
     except Exception as e:
         return f"Error invoking model: {str(e)}"
     
-def invokewithImage(image_base64, temperature=0.6, max_tokens=4000):
+def invokewithImage(prompt, image_base64, temperature=0.6, max_tokens=4000):
     payload = {
         "modelId": "anthropic.claude-3-haiku-20240307-v1:0",
         "contentType": "application/json",
@@ -84,7 +84,7 @@ def invokewithImage(image_base64, temperature=0.6, max_tokens=4000):
                         },
                         {
                             "type": "text",
-                            "text": "Can you give me ideas on how to upcycle the item in this image"
+                            "text": prompt
                         }
                     ]
                 }
