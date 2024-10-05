@@ -11,9 +11,10 @@ submit_button = form.form_submit_button(label='Submit')
 
 # When the form is submitted, process the topic with Amazon Bedrock
 if submit_button and topic:
-    prompt = "How can I upcycle an old cardboard box?"
+    prompt = "How can I upcycle an" + topic
     temperature = 1.0
     max_tokens = 200
 
     result = bedrock.invoke(prompt, temperature, max_tokens)
-    print("Response from Llama 2 Chat:", result)
+    
+    print("Response from Chat:", result)
