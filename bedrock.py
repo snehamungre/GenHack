@@ -62,7 +62,7 @@ def invoke(prompt, temperature=0.6, max_tokens=4000):
     except Exception as e:
         return f"Error invoking model: {str(e)}"
     
-def invokewithImage(image_base64, temperature=0.6, max_tokens=4000):
+def invokewithImage(prompt, image_base64, temperature=0.6, max_tokens=4000):
     payload = {
         "modelId": "anthropic.claude-3-haiku-20240307-v1:0",
         "contentType": "application/json",
@@ -84,7 +84,7 @@ def invokewithImage(image_base64, temperature=0.6, max_tokens=4000):
                         },
                         {
                             "type": "text",
-                            "text": "Can you give me ideas on how to upcycle the item in this image"
+                            "text": prompt
                         }
                     ]
                 }
@@ -116,30 +116,23 @@ def invokewithImage(image_base64, temperature=0.6, max_tokens=4000):
         return f"Error invoking model: {str(e)}"
 
 
-def generate_image(text):
+def get_eco_print(text):
     payload = {
-        "modelId": "amazon.titan-image-generator-v2:0",
-        "contentType": "application/json",
-        "accept": "application/json",
-        "body": {
-            "textToImageParams": {
-                "text": text
-            },
-            "taskType": "TEXT_IMAGE",
-            "imageGenerationConfig": {
-                "cfgScale": 8,
-                "seed": 0,
-                "quality": "standard",
-                "width": 1024,
-                "height": 1024,
-                "numberOfImages": 3
-            }
+        "input": {
+        "text": text
+        },
+        "retrieveAndGenerateConfiguration": {
+        "knowledgeBaseConfiguration": {
+            "knowledgeBaseId": "VVRXS9PJQV",
+            "modelArn": "anthropic.claude-v2:1"
+        },
+        "type": "KNOWLEDGE_BASE"
         }
     }
 
     try:
         # Send the request to the image generation model
-        response = bedrock_runtime.invoke_model(
+        response = bedrock_runtime.Retrieve(
             body=json.dumps(payload["body"]),
             modelId=payload["modelId"],
             contentType=payload["contentType"],

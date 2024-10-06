@@ -15,7 +15,7 @@ def shop():
 
     # When the form is submitted, process the topic with Amazon Bedrock
     if submit_button and item:
-        prompt = f"How can I sustainably buy a {item} with a budget of {budget} made out of {material} near {location}?"
+        prompt = f"How can I sustainably buy a {item} with a budget of {budget} made out of {material} near {location}? Give me specific product data"
         prompt += " Also, suggest eco-friendly brands." 
 
         temperature = 1.0
@@ -24,12 +24,9 @@ def shop():
         # Invoke Bedrock and handle potential exceptions
         try:
             result = bedrock.invoke(prompt, temperature, max_tokens)
-            st.write("Response from Chat:")
             st.write(result)
         except Exception as e:
             st.error(f"An error occurred: {e}")
-
-        #result = bedrock.invoke(prompt, temperature, max_tokens)
-        st.text(result)
+            
         print("Response from Chat:", result)
 
