@@ -113,7 +113,7 @@ def upcycle():
     elif submit_button and uploaded_image:
         image = Image.open(uploaded_image)
         st.image(image, caption="Uploaded Image", use_column_width=True)
-        prompt = f"How can I upcycle the items in this image? For each idea, give me how long it will take. Tell me this by saying time: Please give me links to tutorials as well:"
+        prompt = f"How can I upcycle the items in this image? For each idea, give me how long it will take. Give it to me in this format: 1. Idea Name: Time: Time Estimate Description. Tutorial: URL Please give me links to tutorials as well:"
        
         
         base64_image = encode_image_to_base64(image)
