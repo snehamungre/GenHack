@@ -119,6 +119,7 @@ def upcycle():
         base64_image = encode_image_to_base64(image)
         result = bedrock.invokewithImage(prompt,base64_image)
 
+        # display results
         st.success("Here are some upcycling ideas based on your image!")
         # Parse and display ideas
         ideas = parse_image_response_to_ideas(result)
